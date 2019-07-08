@@ -11,7 +11,7 @@ def get_audio(filepath):
         CHUNK = 256
         FORMAT = pyaudio.paInt16
         CHANNELS = 1                # 声道数
-        RATE = 11025                # 采样率
+        RATE = 16000                # 采样率
         RECORD_SECONDS = 5
         WAVE_OUTPUT_FILENAME = filepath
         p = pyaudio.PyAudio()

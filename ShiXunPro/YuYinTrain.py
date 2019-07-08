@@ -1,6 +1,6 @@
 # encoding: utf-8
-# 作者：韦访
-# csdn：https://blog.csdn.net/rookie_wei
+
+
 import numpy as np
 from python_speech_features import mfcc
 import scipy.io.wavfile as wav
@@ -316,8 +316,10 @@ def pad_sequences(sequences, maxlen=None, dtype=np.float32,
     return x, lengths
 
 #路径
-wav_path = 'data/data_thchs30/train'
+wav_path = 'data/data_thchs30/train'  #这个太大了 换个小的
+# wav_path = 'train/'
 label_file = 'data/data_thchs30/data'
+# label_file = 'train/'
 # wav_files, labels = get_wavs_lables(wav_path,label_file)
 wav_files, labels = get_wav_files_and_tran_texts(wav_path, label_file)
 
@@ -518,8 +520,9 @@ with tf.name_scope("accuracy"):
     # 计算label error rate (accuracy)
     ler = tf.reduce_mean(distance, name='label_error_rate')
 
-# 迭代次数
-epochs = 100
+# 迭代次数100
+epochs = 2
+# epochs = 100
 # 模型保存地址
 savedir = "saver/"
 # 如果该目录不存在，新建
@@ -574,23 +577,24 @@ with tf.Session() as sess:
             train_cost += batch_cost
             # 验证模型的准确率，比较耗时，我们训练的时候全力以赴，所以这里先不跑
             # if (batch + 1) % 20 == 0:
-            #     print('loop:', batch, 'Train cost: ', train_cost / (batch + 1))
-            #     feed2 = {input_tensor: source, targets: sparse_labels, seq_length: source_lengths, keep_dropout: 1.0}
-            #
-            #     d, train_ler = sess.run([decoded[0], ler], feed_dict=feed2)
-            #     dense_decoded = tf.sparse_tensor_to_dense(d, default_value=-1).eval(session=sess)
-            #     dense_labels = sparse_tuple_to_texts_ch(sparse_labels, words)
-            #
-            #     counter = 0
-            #     print('Label err rate: ', train_ler)
-            #     for orig, decoded_arr in zip(dense_labels, dense_decoded):
-            #         # convert to strings
-            #         decoded_str = ndarray_to_text_ch(decoded_arr, words)
-            #         print(' file {}'.format(counter))
-            #         print('Original: {}'.format(orig))
-            #         print('Decoded:  {}'.format(decoded_str))
-            #         counter = counter + 1
-            #         break
+            if 1:
+                print('loop:', batch, 'Train cost: ', train_cost / (batch + 1))
+                feed2 = {input_tensor: source, targets: sparse_labels, seq_length: source_lengths, keep_dropout: 1.0}
+
+                d, train_ler = sess.run([decoded[0], ler], feed_dict=feed2)
+                dense_decoded = tf.sparse_tensor_to_dense(d, default_value=-1).eval(session=sess)
+                dense_labels = sparse_tuple_to_texts_ch(sparse_labels, words)
+
+                counter = 0
+                print('Label err rate: ', train_ler)
+                for orig, decoded_arr in zip(dense_labels, dense_decoded):
+                    # convert to strings
+                    decoded_str = ndarray_to_text_ch(decoded_arr, words)
+                    print(' file {}'.format(counter))
+                    print('Original: {}'.format(orig))
+                    print('Decoded:  {}'.format(decoded_str))
+                    counter = counter + 1
+                    break
 
             # 每训练100次保存一下模型
             if (batch + 1) % 100 == 0:

@@ -1,6 +1,6 @@
 import os
 import tensorflow as tf
-from utils import get_data, data_hparams
+from RNN_utils import get_data, data_hparams
 from keras.callbacks import ModelCheckpoint
 
 

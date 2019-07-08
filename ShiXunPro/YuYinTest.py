@@ -1,14 +1,13 @@
 # encoding: utf-8
-# 作者：韦访
-# csdn：https://blog.csdn.net/rookie_wei
 import numpy as np
 from python_speech_features import mfcc
 import scipy.io.wavfile as wav
 import os
+from depends.SpeechModel251 import ModelSpeech
+from depends.LanguageModel2 import ModelLanguage
 import tensorflow as tf
 from tensorflow.python.ops import ctc_ops
 from collections import Counter
-
 
 # 获取文件夹下所有的WAV文件
 def get_wav_files(wav_path):
@@ -175,6 +174,24 @@ def get_ch_lable_v(txt_file, word_num_map, txt_label=None):
     # print(labels_vector)
     return labels_vector
 
+def TargetTest():
+    datapath = '/'
+    modelpath = 'saver/Model/model_speech/'
+    ms = ModelSpeech(datapath)
+    ms.LoadModel(modelpath + 'speech_model251_e_0_step_12000.model')
+    # ms.TestModel(datapath, str_dataset='test', data_count = 64, out_report = True)
+    r = ms.RecognizeSpeech_FromFile('input.wav')
+    print('拼音如下：')
+    for i in range(len(r)):
+        print(r[i],end=' ')
+    print('\n')
+    ml = ModelLanguage('model_language')
+    ml.LoadModel()
+
+    str_pinyin = r
+    r = ml.SpeechToText(str_pinyin)
+    print('语音（拼音）转文字结果：\n', r)
+    return r
 
 def get_ch_lable(txt_file):
     labels = ""
@@ -315,7 +332,8 @@ def pad_sequences(sequences, maxlen=None, dtype=np.float32,
     return x, lengths
 
 #路径
-wav_path = 'data/data_thchs30/train'
+wav_path = 'data/data_thchs30/train'  #这个太大了 换个小的
+# wav_path = 'train/'
 label_file = 'data/data_thchs30/data'
 # wav_files, labels = get_wavs_lables(wav_path,label_file)
 wav_files, labels = get_wav_files_and_tran_texts(wav_path, label_file)
@@ -387,15 +405,17 @@ def get_speech_file(wav_file, labels):
     return source, source_lengths, sparse_labels
 
 
+print('先测试一下，避免打开的路径不存在\n')
 print('音频文件:  ' + wav_files[0])
 print('文字内容:  ' + labels[0])
 # 获取一个batch的数据
 next_idx, source, source_len, sparse_lab = next_batch(wav_files, labels, 0, batch_size)
-print(np.shape(source))
+print("获取一个batch的数据,得到source为：",np.shape(source))
 # 将字向量转成文字
 t = sparse_tuple_to_texts_ch(sparse_lab, words)
 print(t[0])
 # source已经将变为前9（不够补空）+本身+后9，每个26，第一个顺序是第10个的数据。
+print('小测试完成，说明路径没错...继续进行下一步\n')
 
 
 b_stddev = 0.046875
@@ -506,72 +526,76 @@ def BiRNN_model(batch_x, seq_length, n_input, n_context, n_character, keep_dropo
     # Output shape: [amax_stepsize, batch_size, n_character]
     return layer_6
 
+TargetTest()
 
-# input_tensor为输入音频数据，由前面分析可知，它的结构是[batch_size, amax_stepsize, n_input + (2 * n_input * n_context)]
-# 其中，batch_size是batch的长度，amax_stepsize是时序长度，n_input + (2 * n_input * n_context)是MFCC特征数，
-# batch_size是可变的，所以设为None，由于每一批次的时序长度不固定，所有，amax_stepsize也设为None
-input_tensor = tf.placeholder(tf.float32, [None, None, n_input + (2 * n_input * n_context)], name='input')
-# Use sparse_placeholder; will generate a SparseTensor, required by ctc_loss op.
-# targets保存的是音频数据对应的文本的系数张量，所以用sparse_placeholder创建一个稀疏张量
-targets = tf.sparse_placeholder(tf.int32, name='targets')
-# seq_length保存的是当前batch数据的时序长度
-seq_length = tf.placeholder(tf.int32, [None], name='seq_length')
-# keep_dropout则是dropout的参数
-keep_dropout = tf.placeholder(tf.float32)
+def CheckpointTest():
+    # input_tensor为输入音频数据，由前面分析可知，它的结构是[batch_size, amax_stepsize, n_input + (2 * n_input * n_context)]
+    # 其中，batch_size是batch的长度，amax_stepsize是时序长度，n_input + (2 * n_input * n_context)是MFCC特征数，
+    # batch_size是可变的，所以设为None，由于每一批次的时序长度不固定，所有，amax_stepsize也设为None
+    input_tensor = tf.placeholder(tf.float32, [None, None, n_input + (2 * n_input * n_context)], name='input')
+    # Use sparse_placeholder; will generate a SparseTensor, required by ctc_loss op.
+    # targets保存的是音频数据对应的文本的系数张量，所以用sparse_placeholder创建一个稀疏张量
+    targets = tf.sparse_placeholder(tf.int32, name='targets')
+    # seq_length保存的是当前batch数据的时序长度
+    seq_length = tf.placeholder(tf.int32, [None], name='seq_length')
+    # keep_dropout则是dropout的参数
+    keep_dropout = tf.placeholder(tf.float32)
 
-# logits is the non-normalized output/activations from the last layer.
-# logits will be input for the loss function.
-# nn_model is from the import statement in the load_model function
-logits = BiRNN_model(input_tensor, tf.to_int64(seq_length), n_input, n_context, words_size + 1, keep_dropout)
+    # logits is the non-normalized output/activations from the last layer.
+    # logits will be input for the loss function.
+    # nn_model is from the import statement in the load_model function
+    logits = BiRNN_model(input_tensor, tf.to_int64(seq_length), n_input, n_context, words_size + 1, keep_dropout)
 
-aa = ctc_ops.ctc_loss(targets, logits, seq_length)
-# 使用ctc loss计算损失
-avg_loss = tf.reduce_mean(aa)
+    aa = ctc_ops.ctc_loss(targets, logits, seq_length)
+    # 使用ctc loss计算损失
+    avg_loss = tf.reduce_mean(aa)
 
-# 优化器
-learning_rate = 0.001
-optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(avg_loss)
+    # 优化器
+    learning_rate = 0.001
+    optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(avg_loss)
 
-# 使用CTC decoder
-with tf.name_scope("decode"):
-    decoded, log_prob = ctc_ops.ctc_greedy_decoder(logits, seq_length, merge_repeated=True)
+    # 使用CTC decoder
+    with tf.name_scope("decode"):
+        decoded, log_prob = ctc_ops.ctc_greedy_decoder(logits, seq_length, merge_repeated=True)
 
-# 计算编辑距离
-with tf.name_scope("accuracy"):
-    distance = tf.edit_distance(tf.cast(decoded[0], tf.int32), targets)
-    # 计算label error rate (accuracy)
-    ler = tf.reduce_mean(distance, name='label_error_rate')
+    # 计算编辑距离
+    with tf.name_scope("accuracy"):
+        distance = tf.edit_distance(tf.cast(decoded[0], tf.int32), targets)
+        # 计算label error rate (accuracy)
+        ler = tf.reduce_mean(distance, name='label_error_rate')
 
-# 迭代次数
-epochs = 150
-# 模型保存地址
-savedir = "saver/"
-# 如果该目录不存在，新建
-if os.path.exists(savedir) == False:
-    os.mkdir(savedir)
+    # 迭代次数
+    epochs = 150
+    # 模型保存地址
+    savedir = "saver/"
+    # 如果该目录不存在，新建
+    if os.path.exists(savedir) == False:
+        os.mkdir(savedir)
 
-# 生成saver
-saver = tf.train.Saver(max_to_keep=1)
-# 创建session
-with tf.Session() as sess:
-    # 初始化
-    sess.run(tf.global_variables_initializer())
-    # 没有模型的话，就重新初始化
-    kpt = tf.train.latest_checkpoint(savedir)
+    # 生成saver
+    saver = tf.train.Saver(max_to_keep=1)
+    # 创建session
+    with tf.Session() as sess:
+        # 初始化
+        sess.run(tf.global_variables_initializer())
+        # 没有模型的话，就重新初始化
+        kpt = tf.train.latest_checkpoint(savedir)
+        print("kpt:", kpt)
+        startepo = 0
+        if kpt != None:
+            saver.restore(sess, kpt)
+            ind = kpt.find("-")
+            startepo = int(kpt[ind + 1:])
 
-    startepo = 0
-    if kpt != None:
-        saver.restore(sess, kpt)
-        ind = kpt.find("-")
-        startepo = int(kpt[ind + 1:])
+        # 要识别的语音文件
+        wav_file = 'input.wav'
 
-    # 要识别的语音文件
-    wav_file = 'input.wav'
+        source, source_lengths, sparse_labels = get_speech_file(wav_file, labels)
+        feed2 = {input_tensor: source, targets: sparse_labels, seq_length: source_lengths, keep_dropout: 1.0}
+        d, train_ler = sess.run([decoded[0], ler], feed_dict=feed2)
+        dense_decoded = tf.sparse_tensor_to_dense(d, default_value=-1).eval(session=sess)
+        if (len(dense_decoded) > 0):
+            decoded_str = ndarray_to_text_ch(dense_decoded[0], words)
+            print('Decoded:  {}'.format(decoded_str))
 
-    source, source_lengths, sparse_labels = get_speech_file(wav_file, labels)
-    feed2 = {input_tensor: source, targets: sparse_labels, seq_length: source_lengths, keep_dropout: 1.0}
-    d, train_ler = sess.run([decoded[0], ler], feed_dict=feed2)
-    dense_decoded = tf.sparse_tensor_to_dense(d, default_value=-1).eval(session=sess)
-    if (len(dense_decoded) > 0):
-        decoded_str = ndarray_to_text_ch(dense_decoded[0], words)
-        print('Decoded:  {}'.format(decoded_str))
+# CheckpointTest()
