@@ -14,6 +14,7 @@ def get_wavs_lables():
     conf = Config()
     wav_files, text_labels = do_get_wavs_lables(conf.get("FILE_DATA").wav_path,
                                                 conf.get("FILE_DATA").label_file)
+    # print(conf.get("FILE_DATA").wav_path,conf.get("FILE_DATA").label_file)
     print(wav_files[0], text_labels[0])
     # wav/train/A11/A11_0.WAV -> 绿 是 阳春 烟 景 大块 文章 的 底色 四月 的 林 峦 更是 绿 得 鲜活 秀媚 诗意 盎然
     print("wav:", len(wav_files), "label", len(text_labels))
@@ -34,8 +35,8 @@ def do_get_wavs_lables(wav_path, label_file):
         for filename in filenames:
             if filename.endswith('.wav') or filename.endswith('.WAV'):
                 filename_path = os.sep.join([dirpath, filename])
-                if os.stat(filename_path).st_size < 240000:  # 剔除掉一些小文件
-                    continue
+                # if os.stat(filename_path).st_size < 2:  # 剔除掉一些小文件
+                #     continue
                 wav_files.append(filename_path)
 
     labels_dict = {}

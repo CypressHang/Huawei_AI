@@ -919,8 +919,8 @@ shu4	数术树述束竖恕墅漱俞戍庶澍沭腧曙
 shua1	刷唰
 shua3	耍
 shua4	刷
-shuai1	衰摔
-shuai3	甩
+shuai1	衰摔帅
+shuai3	甩帅
 shuai4	率帅蟀
 shuan1	栓拴闩
 shuan4	涮
@@ -1291,7 +1291,7 @@ fan5	烦
 tou5	头
 jing2	井
 ji5	记计疾积
-guo5	过
+guo5	过国
 zhi5	置质制指脂
 niao2	袅
 xi5	息系
@@ -1318,7 +1318,7 @@ yue5	月
 diao5	掉
 wu5	物务
 xing5	猩
-bing5	病饼
+bing5	冰病饼
 ruo5	弱
 mu2	亩母
 zuo5	坐做
@@ -1400,7 +1400,7 @@ yong5	用
 ou2	偶
 hu5	乎
 zou2	走
-bai5	白
+bai5	白柏
 zhang2	长
 bang2	榜
 zhan2	展

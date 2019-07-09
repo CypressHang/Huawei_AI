@@ -7,8 +7,8 @@ import tensorflow as tf
 from tensorflow.python.ops import ctc_ops
 from collections import Counter
 import platform as plat
-from depends.SpeechModel251 import ModelSpeech
-from depends.LanguageModel2 import ModelLanguage
+from depends.ShengXueModel import ModelSpeech
+from depends.YuYanModel import ModelLanguage
 
 
 

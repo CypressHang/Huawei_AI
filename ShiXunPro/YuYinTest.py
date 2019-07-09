@@ -3,8 +3,8 @@ import numpy as np
 from python_speech_features import mfcc
 import scipy.io.wavfile as wav
 import os
-from depends.SpeechModel251 import ModelSpeech
-from depends.LanguageModel2 import ModelLanguage
+from depends.ShengXueModel import ModelSpeech
+from depends.YuYanModel import ModelLanguage
 import tensorflow as tf
 from tensorflow.python.ops import ctc_ops
 from collections import Counter

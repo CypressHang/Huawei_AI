@@ -71,7 +71,7 @@ class Config:
 
 if __name__ == "__main__":
     conf = Config()
-    #print(conf.get("FILE_DATA").wav_path)
+    print(conf.get("FILE_DATA").wav_path)
 
-    #print(conf.get("FILE_DATA").label_file)
+    print(conf.get("FILE_DATA").label_file)
 
