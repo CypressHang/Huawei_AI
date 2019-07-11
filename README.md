@@ -10,13 +10,16 @@
 **经过小组内五次提交，代码的基本功能已经实现，并且具有界面。克隆本工程到本地，下载好相应数据集，进行训练后运行show.py即可进入图形界面，根据操作进行语音识别**
 
 <br/>
-另一个仓库：https://github.com/CypressHang/CypressHang.github.io
 <br/>
 <br/>
 <br/>
 <br/>
 <br/>
-另外周冰大神缺女朋友，有意者请联系……
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 <br/>
 <br/>
 <br/>
@@ -24,3 +27,5 @@
 <br/>
 
 **广告位招租**
+
+另一个仓库：https://github.com/CypressHang/CypressHang.github.io
