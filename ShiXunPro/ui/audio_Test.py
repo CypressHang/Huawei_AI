@@ -1,7 +1,8 @@
 
 import pyaudio
 import wave
-input_filename = "input.wav"               # 麦克风采集的语音输入
+input_filename = "" \
+                 "../input.wav"               # 麦克风采集的语音输入
 input_filepath = ""              # 输入文件的path
 in_path = input_filepath + input_filename
 
@@ -11,7 +12,7 @@ def get_audio(filepath):
         CHUNK = 256
         FORMAT = pyaudio.paInt16
         CHANNELS = 1                # 声道数
-        RATE = 11025                # 采样率
+        RATE = 16000                # 采样率
         RECORD_SECONDS = 5
         WAVE_OUTPUT_FILENAME = filepath
         p = pyaudio.PyAudio()
@@ -45,5 +46,4 @@ def get_audio(filepath):
         print("无效输入，请重新选择")
         get_audio(in_path)
 
-# 联合上一篇博客代码使用，就注释掉下面，单独使用就不注释
 get_audio(in_path)

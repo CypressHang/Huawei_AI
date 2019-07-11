@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QFrame" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>240</y>
+      <width>641</width>
+      <height>211</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <property name="lineWidth">
+     <number>0</number>
+    </property>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>8</y>
+       <width>54</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>result</string>
+     </property>
+    </widget>
+    <widget class="QTextBrowser" name="textBrowser">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>621</width>
+       <height>171</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="frame_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>641</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>50</y>
+       <width>161</width>
+       <height>161</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string extracomment="点击此处添加文件"/>
+     </property>
+     <property name="text">
+      <string>PushButton</string>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="radioButton">
+     <property name="geometry">
+      <rect>
+       <x>321</x>
+       <y>90</y>
+       <width>89</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>中文</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="radioButton_2">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>90</y>
+       <width>89</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>英文</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>284</x>
+       <y>92</y>
+       <width>54</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>语种:</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>150</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>录音</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_3">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>150</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>开始识别</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuHELP">
+    <property name="title">
+     <string>Help</string>
+    </property>
+   </widget>
+   <addaction name="menuHELP"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

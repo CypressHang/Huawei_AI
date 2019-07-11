@@ -174,7 +174,23 @@ def get_ch_lable_v(txt_file, word_num_map, txt_label=None):
     # print(labels_vector)
     return labels_vector
 
-def TargetTest():
+def TargetTest(file_path='input.wav'):
+    datapath = '/'
+    modelpath = 'saver/Model/model_speech/'
+    ms = ModelSpeech(datapath)
+    ms.LoadModel(modelpath + 'speech_model251_e_0_step_12000.model')
+    # ms.TestModel(datapath, str_dataset='test', data_count = 64, out_report = True)
+    r = ms.RecognizeSpeech_FromFile(file_path)
+    print('*[提示] 语音识别结果 拼音：\n', r)
+    ml = ModelLanguage('model_language')
+    ml.LoadModel()
+
+    str_pinyin = r
+    r = ml.SpeechToText(str_pinyin)
+    print('语音（拼音）转文字结果：\n', r)
+    return r
+
+def TargetTestOld():
     datapath = '/'
     modelpath = 'saver/Model/model_speech/'
     ms = ModelSpeech(datapath)
@@ -526,7 +542,7 @@ def BiRNN_model(batch_x, seq_length, n_input, n_context, n_character, keep_dropo
     # Output shape: [amax_stepsize, batch_size, n_character]
     return layer_6
 
-TargetTest()
+# TargetTestOld()
 
 def CheckpointTest():
     # input_tensor为输入音频数据，由前面分析可知，它的结构是[batch_size, amax_stepsize, n_input + (2 * n_input * n_context)]
@@ -599,3 +615,6 @@ def CheckpointTest():
             print('Decoded:  {}'.format(decoded_str))
 
 # CheckpointTest()
+
+
+

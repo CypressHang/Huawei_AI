@@ -5,7 +5,7 @@ import pyaudio
 import wave
 
 input_filename = "input.wav"  # 麦克风采集的语音输入
-input_filepath = ""  # 输入文件的path
+input_filepath = "wav_file/"  # 输入文件的path
 in_path = input_filepath + input_filename
 CHUNK = 256
 FORMAT = pyaudio.paInt16
@@ -53,4 +53,5 @@ def start():
 def stop():
     global allowRecording
     allowRecording = False
+    return in_path
 

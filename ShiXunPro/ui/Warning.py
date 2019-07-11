@@ -9,30 +9,31 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(339, 232)
-        Form.setCursor(QtGui.QCursor(QtCore.Qt.ForbiddenCursor))
-        self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(100, 80, 131, 16))
+class Ui_Warning(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(411, 267)
+        self.groupBox = QtWidgets.QGroupBox(Dialog)
+        self.groupBox.setGeometry(QtCore.QRect(60, 70, 271, 131))
+        self.groupBox.setObjectName("groupBox")
+        self.label = QtWidgets.QLabel(self.groupBox)
+        self.label.setGeometry(QtCore.QRect(80, 50, 151, 16))
         self.label.setObjectName("label")
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(Dialog)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Warning"))
-        self.label.setText(_translate("Form", "自毁程序已启动！！！"))
+        Dialog.setWindowTitle(_translate("Dialog", "Warning"))
+        self.groupBox.setTitle(_translate("Dialog", "Warning"))
+        self.label.setText(_translate("Dialog", "自毁程序已启动！！！！！"))
 
 
-if __name__ == "__main__":
-    import sys
 
-    app = QtWidgets.QApplication(sys.argv)
-    window = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(window)
-    window.show()
-    sys.exit(app.exec_())
+if __name__ == '__main__':
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Warning()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    Dialog.exec_()
